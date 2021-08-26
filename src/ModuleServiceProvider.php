@@ -5,6 +5,7 @@ namespace Rp76\Module;
 
 
 use Illuminate\Support\ServiceProvider;
+use Rp76\Module\Command\Controller;
 use Rp76\Module\Command\Migration;
 use Rp76\Module\Command\Model;
 use Rp76\Module\Command\Module;
@@ -16,6 +17,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->commands(Module::class);
         $this->commands(Model::class);
         $this->commands(Migration::class);
+        $this->commands(Controller::class);
     }
 
     public function register()
