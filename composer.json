@@ -1,0 +1,19 @@
+{
+    "name": "rp76/module",
+    "description": "this package will help anyone who want to make a modular laravel project.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RezaParsian",
+            "email": "rezaparsian76@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Rp76\\Module\\": "src"
+        }
+    }
+}

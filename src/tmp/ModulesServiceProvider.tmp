@@ -1,0 +1,30 @@
+<?php
+
+namespace Modules;
+
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+
+class ModulesServiceProvider extends ServiceProvider
+{
+
+    public function boot()
+    {
+        $modules = config("module");
+
+        foreach ($modules as $module) {
+            if (file_exists(__DIR__ . '/' . $module . '/router.php'))
+                include __DIR__ . '/' . $module . "/router.php";
+
+            if (is_dir(__DIR__ . '/' . $module . '/Views'))
+                $this->loadViewsFrom(__DIR__ . '/' . $module . '/Views', $module);
+
+            if (is_dir(__DIR__ . '/' . $module . '/Migrations'))
+                $this->loadMigrationsFrom(__DIR__ . '/' . $module . '/Migrations');
+        }
+    }
+
+    public function register()
+    {
+
+    }
+}
