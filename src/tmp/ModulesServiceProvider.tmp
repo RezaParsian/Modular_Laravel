@@ -9,7 +9,7 @@ class ModulesServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $modules = config("module");
+        $modules = config("RpModule");
 
         foreach ($modules as $module) {
             if (file_exists(__DIR__ . '/' . $module . '/router.php'))
