@@ -12,8 +12,15 @@ class ModulesServiceProvider extends ServiceProvider
         $modules = config("RpModule");
 
         foreach ($modules as $module) {
+
+            if (file_exists(_DIR_ . '/' . $module . '/' . $module . '.php'))
+                include _DIR_ . '/' . $module . '/' . $module . '.php';
+
             if (file_exists(__DIR__ . '/' . $module . '/router.php'))
                 include __DIR__ . '/' . $module . "/router.php";
+
+            $classname ="Module\\". $module;
+            new $classname();
 
             if (is_dir(__DIR__ . '/' . $module . '/Views'))
                 $this->loadViewsFrom(__DIR__ . '/' . $module . '/Views', $module);
