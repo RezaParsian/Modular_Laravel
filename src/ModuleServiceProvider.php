@@ -22,7 +22,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->commands(NewModule::class);
 
         $this->publishes([
-           realpath(__DIR__."/../config/RpModule.php")=>config_path("RpModule.php")
+           realpath(__DIR__."/config/RpModule.php")=>config_path("RpModule.php")
         ]);
     }
 
