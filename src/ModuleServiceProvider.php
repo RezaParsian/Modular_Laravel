@@ -9,6 +9,7 @@ use Rp76\Module\Command\Controller;
 use Rp76\Module\Command\Migration;
 use Rp76\Module\Command\Model;
 use Rp76\Module\Command\Module;
+use Rp76\Module\Command\NewModule;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,11 @@ class ModuleServiceProvider extends ServiceProvider
         $this->commands(Model::class);
         $this->commands(Migration::class);
         $this->commands(Controller::class);
+        $this->commands(NewModule::class);
+
+        $this->publishes([
+           __DIR__."/../config/RpModule.php"=>config_path("RpModule.php")
+        ]);
     }
 
     public function register()

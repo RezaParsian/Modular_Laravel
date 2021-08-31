@@ -15,5 +15,10 @@
         "psr-4": {
             "Rp76\\Module\\": "src"
         }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php artisan module:install"
+        ]
     }
 }

@@ -33,8 +33,6 @@ class Module extends Command
 
     public function handle()
     {
-        $this->changeComposer();
-
         $this->makeMainFolder();
 
         $this->makeMainService();
@@ -55,17 +53,11 @@ class Module extends Command
             mkdir(base_path("modules/Rp76/Controllers/"));
 
         file_put_contents(base_path("modules/Rp76/router.php"),file_get_contents(__DIR__."/../tmp/routes.tmp"));
+        file_put_contents(base_path("modules/Rp76/composer.json"),file_get_contents(__DIR__."/../tmp/composer.tmp"));
         file_put_contents(base_path("modules/Rp76/Views/index.blade.php"),"<h1>This is Rp template</h1>");
 
         echo "add ModulesServiceProvider to config/app.php";
         echo PHP_EOL;
-    }
-
-    public function changeComposer(): void
-    {
-        $composer = json_decode(file_get_contents(base_path("composer.json")), true);
-        $composer['autoload']['psr-4']['Modules\\'] = "modules/";
-        file_put_contents(base_path("composer.json"), str_replace('\/', "/", json_encode($composer)));
     }
 
     public function makeMainFolder(): void
