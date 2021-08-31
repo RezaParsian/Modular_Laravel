@@ -51,10 +51,11 @@ class NewModule extends Command
             mkdir(base_path("modules/{$module}/Controllers/"));
 
         file_put_contents(base_path("modules/{$module}/router.php"), file_get_contents(__DIR__ . "/../tmp/routes.tmp"));
+        file_put_contents(base_path("modules/{$module}/{$module}.php"), str_replace("%Rp76%",$module,file_get_contents(__DIR__ . "/../tmp/MainClass.tmp")));
         file_put_contents(base_path("modules/{$module}/composer.json"), file_get_contents(__DIR__ . "/../tmp/composer.tmp"));
         file_put_contents(base_path("modules/{$module}/Views/index.blade.php"), "<h1>This is Rp template</h1>");
 
-        return shell_exec("cd " . base_path("modules/{$module}") . " && composer install");
+        shell_exec("cd " . base_path("modules/{$module}") . " && composer install");
 
         echo "add ModulesServiceProvider to config/app.php";
         echo PHP_EOL;

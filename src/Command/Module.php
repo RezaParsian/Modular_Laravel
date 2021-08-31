@@ -53,8 +53,11 @@ class Module extends Command
             mkdir(base_path("modules/Rp76/Controllers/"));
 
         file_put_contents(base_path("modules/Rp76/router.php"),file_get_contents(__DIR__."/../tmp/routes.tmp"));
+        file_put_contents(base_path("modules/Rp76/Rp76.php"), str_replace("%Rp76%","Rp76",file_get_contents(__DIR__ . "/../tmp/MainClass.tmp")));
         file_put_contents(base_path("modules/Rp76/composer.json"),file_get_contents(__DIR__."/../tmp/composer.tmp"));
         file_put_contents(base_path("modules/Rp76/Views/index.blade.php"),"<h1>This is Rp template</h1>");
+
+        shell_exec("cd " . base_path("modules/Rp76") . " && composer install");
 
         echo "add ModulesServiceProvider to config/app.php";
         echo PHP_EOL;
