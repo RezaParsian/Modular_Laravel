@@ -58,8 +58,6 @@ class Module extends Command
         file_put_contents(base_path("modules/Rp76/Views/index.blade.php"),"<h1>This is Rp76 template</h1>");
 
         shell_exec("cd " . base_path("modules/Rp76") . " && composer install");
-
-        echo "add ModulesServiceProvider to config/app.php";
         echo PHP_EOL;
     }
 
@@ -67,10 +65,5 @@ class Module extends Command
     {
         if (!realpath(base_path("modules/")))
             mkdir(base_path("modules/"));
-    }
-
-    public function makeMainService(): void
-    {
-        copy(__DIR__ . "/../tmp/ModulesServiceProvider.tmp", base_path("modules/ModulesServiceProvider.php"));
     }
 }
