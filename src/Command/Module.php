@@ -35,8 +35,6 @@ class Module extends Command
     {
         $this->makeMainFolder();
 
-        $this->makeMainService();
-
         if (!realpath(base_path("modules/Rp76/")))
             mkdir(base_path("modules/Rp76/"));
 
