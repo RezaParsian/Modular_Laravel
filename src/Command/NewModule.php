@@ -50,10 +50,10 @@ class NewModule extends Command
         if (!realpath(base_path("modules/{$module}/Controllers/")))
             mkdir(base_path("modules/{$module}/Controllers/"));
 
-        file_put_contents(base_path("modules/{$module}/router.php"), file_get_contents(__DIR__ . "/../tmp/routes.tmp"));
+        file_put_contents(base_path("modules/{$module}/router.php"),str_replace("%Rp76%",$module,file_get_contents(__DIR__."/../tmp/routes.tmp")));
         file_put_contents(base_path("modules/{$module}/{$module}.php"), str_replace("%Rp76%",$module,file_get_contents(__DIR__ . "/../tmp/MainClass.tmp")));
         file_put_contents(base_path("modules/{$module}/composer.json"), file_get_contents(__DIR__ . "/../tmp/composer.tmp"));
-        file_put_contents(base_path("modules/{$module}/Views/index.blade.php"), "<h1>This is Rp template</h1>");
+        file_put_contents(base_path("modules/{$module}/Views/index.blade.php"), "<h1>This is {$module} template</h1>");
 
         shell_exec("cd " . base_path("modules/{$module}") . " && composer install");
 

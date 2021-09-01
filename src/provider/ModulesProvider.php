@@ -12,21 +12,20 @@ class ModulesProvider extends ServiceProvider
         $modules = config("RpModule");
 
         foreach ($modules as $module) {
+            if (file_exists(base_path() . '/modules/' . $module . '/' . $module . '.php'))
+                require base_path() . '/modules/' . $module . '/' . $module . '.php';
 
-            if (file_exists(base_path() . '/' . $module . '/' . $module . '.php'))
-                include base_path() . '/' . $module . '/' . $module . '.php';
+            if (file_exists(base_path() . '/modules/' .  $module . "/router.php"))
+                include base_path() . '/modules/' .  $module . "/router.php";
 
-            if (file_exists(base_path() . '/' . $module . '/router.php'))
-                include base_path() . '/' . $module . "/router.php";
-
-            $classname = "Module\\" . $module;
+            $classname = "Modules\\" . $module . "\\" . $module;
             new $classname();
 
-            if (is_dir(base_path() . '/' . $module . '/Views'))
-                $this->loadViewsFrom(base_path() . '/' . $module . '/Views', $module);
+            if (is_dir(base_path() . '/modules/' . $module . '/Views'))
+                $this->loadViewsFrom(base_path() . '/modules/' .  $module . '/Views', $module);
 
-            if (is_dir(base_path() . '/' . $module . '/Migrations'))
-                $this->loadMigrationsFrom(base_path() . '/' . $module . '/Migrations');
+            if (is_dir(base_path() . '/modules/' . $module . '/Migrations'))
+                $this->loadMigrationsFrom(base_path() . '/modules/' . $module . '/Migrations');
         }
     }
 

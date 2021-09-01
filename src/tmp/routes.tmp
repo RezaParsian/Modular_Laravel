@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view("rp76","Rp76::index");
+Route::view("%Rp76%","%Rp76%::index");
