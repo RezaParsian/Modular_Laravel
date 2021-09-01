@@ -30,7 +30,16 @@ or
 ```
 php artisan vendor:publish --provider="Rp76\Module\ModuleServiceProvider"
 ```
-or any way you know.
+or any ways you know.
+
+after you published that, you have to add this command to.
+```
+// config/app.php
+'providers' => [
+    ...
+    \App\Providers\ModulesProvider::class,
+],
+```
 
 **Tip: new modules don't need any composer install or dump−autoload**
 
