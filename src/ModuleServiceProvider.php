@@ -23,11 +23,11 @@ class ModuleServiceProvider extends ServiceProvider
 
         $this->publishes([
            realpath(__DIR__."/config/RpModule.php")=>config_path("RpModule.php")
-        ]);
+        ],"RpModule");
 
         $this->publishes([
            realpath(__DIR__."/provider/ModulesProvider.php")=>app_path("Providers/ModulesProvider.php")
-        ]);
+        ],"RpModule");
     }
 
     public function register()

@@ -20,7 +20,7 @@ class Migration extends Command
      *
      * @var string
      */
-    protected $description = 'install dependency';
+    protected $description = 'create new migration';
 
     /**
      * Create a new command instance.
@@ -39,7 +39,8 @@ class Migration extends Command
 
         Artisan::call("make:migration {$name} --path=modules/{$module}/Migrations/");
 
-        echo "Your migration made";
-        echo PHP_EOL;
+        $this->line("<fg=yellow>It may take a few second...</>");
+        sleep(1);
+        $this->line("<fg=green>migration created successfully.</>");
     }
 }

@@ -3,7 +3,7 @@
 namespace Rp76\Module\Command;
 
 use Illuminate\Console\Command;
-use function PHPUnit\Framework\fileExists;
+use Rp76\Module\Helper\Command as RpCommand;
 
 class Module extends Command
 {
@@ -19,7 +19,7 @@ class Module extends Command
      *
      * @var string
      */
-    protected $description = 'install dependency';
+    protected $description = 'install module dependency (use it once)';
 
     /**
      * Create a new command instance.
@@ -33,35 +33,35 @@ class Module extends Command
 
     public function handle()
     {
-        $this->makeMainFolder();
+        if (realpath(base_path("modules"))) {
+            $this->line("<fg=red>the module installed before.</>");
+            return;
+        }
 
-        if (!realpath(base_path("modules/Rp76/")))
-            mkdir(base_path("modules/Rp76/"));
+        RpCommand::makePath('modules/');
 
-        if (!realpath(base_path("modules/Rp76/Views/")))
-            mkdir(base_path("modules/Rp76/Views/"));
+        RpCommand::makePath("modules/Rp76/");
 
-        if (!realpath(base_path("modules/Rp76/Migrations/")))
-            mkdir(base_path("modules/Rp76/Migrations/"));
+        RpCommand::makePath('modules/Rp76/Views/');
 
-        if (!realpath(base_path("modules/Rp76/Models/")))
-            mkdir(base_path("modules/Rp76/Models/"));
+        RpCommand::makePath('modules/Rp76/Migrations/');
 
-        if (!realpath(base_path("modules/Rp76/Controllers/")))
-            mkdir(base_path("modules/Rp76/Controllers/"));
+        RpCommand::makePath('modules/Rp76/Models/');
 
-        file_put_contents(base_path("modules/Rp76/router.php"),str_replace("%Rp76%","Rp76",file_get_contents(__DIR__."/../tmp/routes.tmp")));
-        file_put_contents(base_path("modules/Rp76/Rp76.php"), str_replace("%Rp76%","Rp76",file_get_contents(__DIR__ . "/../tmp/MainClass.tmp")));
-        file_put_contents(base_path("modules/Rp76/composer.json"),file_get_contents(__DIR__."/../tmp/composer.tmp"));
-        file_put_contents(base_path("modules/Rp76/Views/index.blade.php"),"<h1>This is Rp76 template</h1>");
+        RpCommand::makePath('modules/Rp76/Controllers/');
 
-        shell_exec("cd " . base_path("modules/Rp76") . " && composer install");
-        echo PHP_EOL;
-    }
+        RpCommand::makeFile("modules/Rp76/router.php", "Rp76", "routes.tmp");
 
-    public function makeMainFolder(): void
-    {
-        if (!realpath(base_path("modules/")))
-            mkdir(base_path("modules/"));
+        RpCommand::makeFile("modules/Rp76/Rp76.php", "Rp76", 'MainClass.tmp');
+
+        RpCommand::makeFile("modules/Rp76/composer.json", "Rp76", "composer.tmp");
+
+        RpCommand::makeFile("modules/Rp76/Views/index.blade.php", "Rp76", "index.blade.tmp");
+
+        RpCommand::exec("Rp76", "composer install");
+
+        $this->line("<fg=yellow>It may take a few second...</>");
+        sleep(1);
+        $this->line("<fg=green>Module install successfully.</>");
     }
 }

@@ -5,6 +5,7 @@ namespace Rp76\Module\Command;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Rp76\Module\Helper\Command as RpCommand;
 use function PHPUnit\Framework\fileExists;
 
 class Model extends Command
@@ -21,7 +22,7 @@ class Model extends Command
      *
      * @var string
      */
-    protected $description = 'install dependency';
+    protected $description = 'create new model';
 
     /**
      * Create a new command instance.
@@ -48,7 +49,8 @@ class Model extends Command
             shell_exec("mv " . $files[0] . " " . realpath("modules/{$module}/Migrations/"));
         }
 
-        echo "Your model made";
-        echo PHP_EOL;
+        $this->line("<fg=yellow>It may take a few second...</>");
+        sleep(1);
+        $this->line("<fg=green>model created successfully.</>");
     }
 }

@@ -3,6 +3,7 @@
 namespace Rp76\Module\Command;
 
 use Illuminate\Console\Command;
+use Rp76\Module\Helper\Command as RpCommand;
 use function PHPUnit\Framework\fileExists;
 
 class NewModule extends Command
@@ -19,7 +20,7 @@ class NewModule extends Command
      *
      * @var string
      */
-    protected $description = 'install dependency';
+    protected $description = 'create new module';
 
     /**
      * Create a new command instance.
@@ -35,29 +36,38 @@ class NewModule extends Command
     {
         $module = $this->argument("name");
 
-        if (!realpath(base_path("modules/{$module}/")))
-            mkdir(base_path("modules/{$module}/"));
+        if (!realpath(base_path("modules"))) {
+            $this->line("<fg=red>first of all use :</> <fg=yellow>php artisan module:install</>");
+            return;
+        }
 
-        if (!realpath(base_path("modules/{$module}/Views/")))
-            mkdir(base_path("modules/{$module}/Views/"));
+        if (realpath(base_path("modules/{$module}"))) {
+            $this->line("<fg=red>this module already exists, choose another name.</>");
+            return;
+        }
 
-        if (!realpath(base_path("modules/{$module}/Migrations/")))
-            mkdir(base_path("modules/{$module}/Migrations/"));
+        RpCommand::makePath("modules/{$module}/");
 
-        if (!realpath(base_path("modules/{$module}/Models/")))
-            mkdir(base_path("modules/{$module}/Models/"));
+        RpCommand::makePath("modules/{$module}/Views/");
 
-        if (!realpath(base_path("modules/{$module}/Controllers/")))
-            mkdir(base_path("modules/{$module}/Controllers/"));
+        RpCommand::makePath("modules/{$module}/Migrations/");
 
-        file_put_contents(base_path("modules/{$module}/router.php"),str_replace("%Rp76%",$module,file_get_contents(__DIR__."/../tmp/routes.tmp")));
-        file_put_contents(base_path("modules/{$module}/{$module}.php"), str_replace("%Rp76%",$module,file_get_contents(__DIR__ . "/../tmp/MainClass.tmp")));
-        file_put_contents(base_path("modules/{$module}/composer.json"), file_get_contents(__DIR__ . "/../tmp/composer.tmp"));
-        file_put_contents(base_path("modules/{$module}/Views/index.blade.php"), "<h1>This is {$module} template</h1>");
+        RpCommand::makePath("modules/{$module}/Models/");
 
-        shell_exec("cd " . base_path("modules/{$module}") . " && composer install");
+        RpCommand::makePath("modules/{$module}/Controllers/");
 
-        echo "add ModulesServiceProvider to config/app.php";
-        echo PHP_EOL;
+        RpCommand::makeFile("modules/{$module}/router.php", "{$module}", "routes.tmp");
+
+        RpCommand::makeFile("modules/{$module}/{$module}.php", "{$module}", 'MainClass.tmp');
+
+        RpCommand::makeFile("modules/{$module}/composer.json", "{$module}", "composer.tmp");
+
+        RpCommand::makeFile("modules/{$module}/Views/index.blade.php", "{$module}", "index.blade.tmp");
+
+        RpCommand::exec($module, "composer install");
+
+        $this->line("<fg=yellow>It may take a few second...</>");
+        sleep(1);
+        $this->line("<fg=green>Module </><fg=yellow>{$module}</> <fg=green>created successfully.</>");
     }
 }

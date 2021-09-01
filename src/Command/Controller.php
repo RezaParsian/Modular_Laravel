@@ -21,7 +21,7 @@ class Controller extends Command
      *
      * @var string
      */
-    protected $description = 'install dependency';
+    protected $description = 'create new controller';
 
     /**
      * Create a new command instance.
@@ -42,7 +42,8 @@ class Controller extends Command
 
         file_put_contents(realpath("modules/{$module}/Controllers/{$name}.php"), str_replace("App\Http\Controllers\..\..\..\m", "M", file_get_contents(realpath("modules/{$module}/Controllers/{$name}.php"))));
 
-        echo "Your controller made";
-        echo PHP_EOL;
+        $this->line("<fg=yellow>It may take a few second...</>");
+        sleep(1);
+        $this->line("<fg=green>controller created successfully.</>");
     }
 }
