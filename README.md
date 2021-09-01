@@ -34,7 +34,7 @@ or any way you know.
 
 **Tip: new modules don't need any composer install or dump−autoload**
 
-##Documentation
+## Documentation
 It's a simple package, we have few **command** to make new files.
 
 ### Start Module
@@ -73,5 +73,5 @@ php artisan module:model {name} {moduleName} --m //php artisan module:model Book
 php artisan module:migration {name} {moduleName} //php artisan module:migration create_book Book 
 ```
 
-##License
+## License
 The MIT License (MIT). Please see [License File](https://github.com/RezaParsian/Modular_Laravel/blob/master/LICENSE) for more information.
