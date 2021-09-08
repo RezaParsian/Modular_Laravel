@@ -1,8 +1,8 @@
 {
     "autoload": {
         "psr-4": {
-            "Modules\\TablePrice\\Controller\\": "Controllers",
-            "Modules\\TablePrice\\Model\\": "Models"
+            "Modules\\%Rp76%\\Controllers\\": "Controllers",
+            "Modules\\%Rp76%\\Models\\": "Models"
         }
     }
 }

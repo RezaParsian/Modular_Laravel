@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class ModulesProvider extends ServiceProvider
 {
@@ -16,7 +17,8 @@ class ModulesProvider extends ServiceProvider
                 require base_path() . '/modules/' . $module . '/' . $module . '.php';
 
             if (file_exists(base_path() . '/modules/' .  $module . "/router.php"))
-                include base_path() . '/modules/' .  $module . "/router.php";
+                Route::middleware(['web'])->group(base_path('/modules/' . $module . "/router.php"));
+
 
             $classname = "Modules\\" . $module . "\\" . $module;
             new $classname();
