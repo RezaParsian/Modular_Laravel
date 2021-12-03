@@ -36,6 +36,8 @@ class NewModule extends Command
     {
         $module = $this->argument("name");
 
+        $this->line("<fg=yellow>It may take a few second...</>");
+
         if (!realpath(base_path("modules"))) {
             $this->line("<fg=red>first of all use :</> <fg=yellow>php artisan module:install</>");
             return;
@@ -66,8 +68,8 @@ class NewModule extends Command
 
         RpCommand::exec($module, "composer install");
 
-        $this->line("<fg=yellow>It may take a few second...</>");
-        sleep(1);
+        RpCommand::add_to_config($module);
+
         $this->line("<fg=green>Module </><fg=yellow>{$module}</> <fg=green>created successfully.</>");
     }
 }

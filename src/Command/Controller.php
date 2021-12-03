@@ -38,12 +38,12 @@ class Controller extends Command
         $name = $this->argument("name");
         $module = $this->argument("module");
 
+        $this->line("<fg=yellow>It may take a few second...</>");
+
         Artisan::call("make:controller " . "../../../modules/{$module}/Controllers/{$name}" . ($this->option("r") != 1 ? " -r" : ""));
 
-        file_put_contents(realpath("modules/{$module}/Controllers/{$name}.php"), str_replace("App\Http\Controllers\..\..\..\m", "M", file_get_contents(realpath("modules/{$module}/Controllers/{$name}.php"))));
+        file_put_contents(base_path("modules/{$module}/Controllers/{$name}.php"), str_replace("App\Http\Controllers\..\..\..\m", "M", file_get_contents(base_path("modules/{$module}/Controllers/{$name}.php"))));
 
-        $this->line("<fg=yellow>It may take a few second...</>");
-        sleep(1);
         $this->line("<fg=green>controller created successfully.</>");
     }
 }

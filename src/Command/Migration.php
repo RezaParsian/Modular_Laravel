@@ -37,10 +37,10 @@ class Migration extends Command
         $name = $this->argument("name");
         $module = $this->argument("module");
 
+        $this->line("<fg=yellow>It may take a few second...</>");
+
         Artisan::call("make:migration {$name} --path=modules/{$module}/Migrations/");
 
-        $this->line("<fg=yellow>It may take a few second...</>");
-        sleep(1);
         $this->line("<fg=green>migration created successfully.</>");
     }
 }

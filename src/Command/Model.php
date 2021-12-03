@@ -39,18 +39,19 @@ class Model extends Command
         $name = $this->argument("name");
         $module = $this->argument("module");
 
+        $this->line("<fg=yellow>It may take a few second...</>");
+
         Artisan::call("make:model " . "../../modules/{$module}/Models/{$name}" . ($this->option("m") != 1 ? " -m" : ""));
 
-        file_put_contents(realpath("modules/{$module}/Models/{$name}.php"), str_replace("App\Models\..\..\m", "M", file_get_contents(realpath("modules/{$module}/Models/{$name}.php"))));
+        file_put_contents(base_path("modules/{$module}/Models/{$name}.php"), str_replace("App\Models\..\..\m", "M", file_get_contents(base_path("modules/{$module}/Models/{$name}.php"))));
 
         if ($this->option("m") != 1) {
-            $files = glob("database/migrations/*" . strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $name)) . "*");
-            print_r($files);
-            shell_exec("mv " . $files[0] . " " . realpath("modules/{$module}/Migrations/"));
+            $files = glob("database/migrations/*" . strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', "create_{$name}")) . "*");
+            $files = end($files);
+            $fileName = explode("/", $files);
+            rename($files, base_path("modules/{$module}/Migrations/" . end($fileName)));
         }
 
-        $this->line("<fg=yellow>It may take a few second...</>");
-        sleep(1);
         $this->line("<fg=green>model created successfully.</>");
     }
 }

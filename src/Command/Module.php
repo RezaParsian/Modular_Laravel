@@ -33,6 +33,8 @@ class Module extends Command
 
     public function handle()
     {
+        $this->line("<fg=yellow>It may take a few second...</>");
+
         if (realpath(base_path("modules"))) {
             $this->line("<fg=red>the module installed before.</>");
             return;
@@ -60,8 +62,6 @@ class Module extends Command
 
         RpCommand::exec("Rp76", "composer install");
 
-        $this->line("<fg=yellow>It may take a few second...</>");
-        sleep(1);
         $this->line("<fg=green>Module install successfully.</>");
     }
 }
