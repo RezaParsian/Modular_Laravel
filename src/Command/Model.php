@@ -3,12 +3,16 @@
 namespace Rp76\Module\Command;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\GeneratorCommand;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Console\ModelMakeCommand;
+use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Rp76\Module\Helper\Command as RpCommand;
 use function PHPUnit\Framework\fileExists;
 
-class Model extends Command
+class Model extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
@@ -24,15 +28,14 @@ class Model extends Command
      */
     protected $description = 'create new model';
 
+
     /**
-     * Create a new command instance.
+     * The type of class being generated.
      *
-     * @return void
+     * @var string
      */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $type = 'Model';
+
 
     public function handle()
     {
@@ -53,5 +56,26 @@ class Model extends Command
         }
 
         $this->line("<fg=green>model created successfully.</>");
+    }
+
+    protected function getStub()
+    {
+        return $this->option('pivot')
+            ? $this->resolveStubPath('/stubs/model.pivot.stub')
+            : $this->resolveStubPath('/stubs/model.stub');
+    }
+
+    protected function resolveStubPath($stub)
+    {
+        $stubPath = str_replace("/ControllerMakeCommand.php", "", (new \ReflectionClass(ModelMakeCommand::class))->getFileName()) . $stub;
+
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : $stubPath;
+    }
+
+    public function __construct(Filesystem $files)
+    {
+        parent::__construct($files);
     }
 }
