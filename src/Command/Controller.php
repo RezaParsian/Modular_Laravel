@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use function PHPUnit\Framework\fileExists;
 
 class Controller extends GeneratorCommand
 {
@@ -47,11 +48,11 @@ class Controller extends GeneratorCommand
 
         $this->line("<fg=yellow>It may take a few second...</>");
 
-//        Artisan::call("make:controller " . "../../../modules/{$module}/Controllers/{$name}" . ($this->option("r") != 1 ? " -r" : ""));
+        if (fileExists(base_path("modules/{$module}/Controllers/{$name}.php")) and !$this->option("force")) {
+            $this->line("<fg=red>Controller already exists.</>");
+            return;
+        }
 
-//        file_put_contents(base_path("modules/{$module}/Controllers/{$name}.php"), str_replace("App\Http\Controllers\..\..\..\m", "M", file_get_contents(base_path("modules/{$module}/Controllers/{$name}.php"))));
-
-        //"/home/reza/www/Rp76Blog/app/Http/Controllers/rp.php"
         $this->files->makeDirectory("modules/{$module}/Controllers", 0777, true, true);
         $this->files->put(base_path("modules/{$module}/Controllers/{$name}.php"), $this->sortImports($this->buildClass($name)));
 
@@ -79,10 +80,6 @@ class Controller extends GeneratorCommand
 
         if ($type = $this->option('type')) {
             $stub = "/stubs/controller.{$type}.stub";
-        } elseif ($this->option('parent')) {
-            $stub = '/stubs/controller.nested.stub';
-        } elseif ($this->option('model')) {
-            $stub = '/stubs/controller.model.stub';
         } elseif ($this->option('invokable')) {
             $stub = '/stubs/controller.invokable.stub';
         } elseif ($this->option('resource')) {
@@ -107,8 +104,8 @@ class Controller extends GeneratorCommand
             ['type', null, InputOption::VALUE_REQUIRED, 'Manually specify the controller stub file to use.'],
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the controller already exists'],
             ['invokable', 'i', InputOption::VALUE_NONE, 'Generate a single method, invokable controller class.'],
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
-            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
+//            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given model.'],
+//            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Generate a nested resource controller class.'],
             ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
             ['requests', 'R', InputOption::VALUE_NONE, 'Generate FormRequest classes for store and update.'],
         ];
@@ -120,6 +117,6 @@ class Controller extends GeneratorCommand
 
     protected function getNamespace($name)
     {
-        return "Modules\\".$this->argument('module')."\\Controllers";
+        return "Modules\\" . $this->argument('module') . "\\Controllers";
     }
 }
