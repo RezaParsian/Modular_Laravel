@@ -13,7 +13,8 @@ class NewModule extends Command
      *
      * @var string
      */
-    protected $signature = 'module:make {name}';
+    protected $signature = 'module:make 
+    {name : Make New Module}';
 
     /**
      * The console command description.

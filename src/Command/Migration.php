@@ -29,6 +29,7 @@ class Migration extends Command
     protected $signature = 'module:migration {name : The name of the migration}
         {module : The name of the module}
         {--create= : The table to be created}
+        {--force : Create the migration even if the model already exists}
         {--table= : The table to migrate}';
 
     /**
@@ -72,10 +73,12 @@ class Migration extends Command
             [$table, $create] = TableGuesser::guess($name);
         }
 
+        if ($this->option("force"))
+            @unlink(glob("modules/{$module}/Migrations/*".$name.".php")[0]);
+
         $file = $this->creator->create(
             $name, "modules/{$module}/Migrations/", $table, $create
         );
-
 
         $this->line("<fg=green>migration created successfully.</>");
     }

@@ -17,7 +17,7 @@
         }
     },
     "scripts": {
-        "rpModule": [
+        "post-install-cmd": [
             "@php artisan module:install"
         ]
     }
